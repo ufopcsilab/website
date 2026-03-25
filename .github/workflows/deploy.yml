@@ -15,14 +15,41 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start server and pre-render static HTML
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          echo "Server PID: $SERVER_PID"
+
+          # Wait until the server responds (up to 15s)
+          for i in $(seq 1 15); do
+            curl -s -o /dev/null http://localhost:3001/pt && break
+            echo "Waiting for server... ($i)"
+            sleep 1
+          done
+
+          npm run build
+
+          kill $SERVER_PID
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -30,7 +57,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: public/
+          path: dist/
 
       - name: Deploy to GitHub Pages
         id: deployment
