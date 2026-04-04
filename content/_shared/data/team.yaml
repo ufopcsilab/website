@@ -45,7 +45,6 @@ coordinators:
         - key: profile
           href: "https://csilab.ufop.br/people/gladston-moreira"
     - name: "Eduardo Luz"
-      openalex_id: "A5059546983"
       role_key: coordinator
       tags: [computer_vision, biometrics, pattern_recognition, biomedical_signals]
       links:
@@ -55,7 +54,6 @@ coordinators:
 professors:
   members:
     - name: "Vander Freitas"
-      openalex_id: "A5031456671"
       role_key: associate_professor
       tags: [machine_learning, nlp, time_series]
       links:
