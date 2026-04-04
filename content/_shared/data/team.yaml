@@ -45,6 +45,7 @@ coordinators:
         - key: profile
           href: "https://csilab.ufop.br/people/gladston-moreira"
     - name: "Eduardo Luz"
+      orcid: "0000-0001-5249-1559"
       role_key: coordinator
       tags: [computer_vision, biometrics, pattern_recognition, biomedical_signals]
       links:
@@ -54,24 +55,28 @@ coordinators:
 professors:
   members:
     - name: "Vander Freitas"
+      orcid: "0000-0001-7989-0816"
       role_key: associate_professor
       tags: [machine_learning, nlp, time_series]
       links:
         - key: profile
           href: "https://csilab.ufop.br/people/vander-freitas"
     - name: "Pedro Silva"
+      orcid: "0000-0002-5525-6121"
       role_key: associate_professor
       tags: [computer_vision, periocular_biometrics, deep_learning, metric_learning]
       links:
         - key: profile
           href: "https://csilab.ufop.br/people/pedro-silva"
     - name: "Jadson Castro"
+      orcid: "0000-0002-0861-6681"
       role_key: associate_professor
       tags: [databases, pattern_recognition, biological_signal_analysis]
       links:
         - key: profile
           href: "https://csilab.ufop.br/people/jadson-castro"
     - name: "Valéria Santos"
+      orcid: "0000-0002-7892-4954"
       gender: f
       role_key: associate_professor_f
       tags: [nlp, machine_learning, text_classification]
@@ -79,6 +84,7 @@ professors:
         - key: profile
           href: "https://csilab.ufop.br/people/valeria-santos"
     - name: "Rodrigo Silva"
+      orcid: "0000-0003-2547-3835"
       role_key: associate_professor
       tags: [data_science, artificial_intelligence, applied_ml]
       links:
