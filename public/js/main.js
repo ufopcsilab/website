@@ -35,6 +35,27 @@ mobileClose?.addEventListener('click', closeMobileNav);
 navOverlay?.addEventListener('click', closeMobileNav);
 document.querySelectorAll('.mobile-nav a').forEach(a => a.addEventListener('click', closeMobileNav));
 
+/* ─── Language dropdown ──────────────────────────────────── */
+const langDropdown = document.getElementById('lang-dropdown');
+const langTrigger  = document.getElementById('lang-trigger');
+if (langTrigger && langDropdown) {
+  langTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = langDropdown.classList.toggle('open');
+    langTrigger.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', () => {
+    langDropdown.classList.remove('open');
+    langTrigger.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      langDropdown.classList.remove('open');
+      langTrigger.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
 /* ─── Animated Counters ──────────────────────────────────── */
 // Targets are embedded server-side as data-target / data-suffix attributes,
 // keeping numbers in sync with team.yaml and publications.yaml automatically.
