@@ -144,28 +144,13 @@ function workToEntry(w) {
   return { year: w.publication_year, entry };
 }
 
-// ── Merge ─────────────────────────────────────────────────────────────────────
+// ── Group by year ─────────────────────────────────────────────────────────────
 
-function norm(t) { return (t || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
-
-function loadExisting() {
-  if (!fs.existsSync(OUT_FILE)) return { byYear: {}, countryCounts: {} };
-  try {
-    const parsed = yaml.load(fs.readFileSync(OUT_FILE, 'utf8')) || {};
-    return {
-      byYear:        Object.fromEntries((parsed.years || []).map(b => [b.year, b.items || []])),
-      countryCounts: parsed.country_counts || {},
-    };
-  } catch { return { byYear: {}, countryCounts: {} }; }
-}
-
-function mergeYears(existing, fromApi) {
-  const byYear = { ...existing };
-  for (const { year, entry } of fromApi) {
+function groupByYear(entries) {
+  const byYear = {};
+  for (const { year, entry } of entries) {
     if (!byYear[year]) byYear[year] = [];
-    if (!byYear[year].some(e => norm(e.title) === norm(entry.title))) {
-      byYear[year].push(entry);
-    }
+    byYear[year].push(entry);
   }
   return byYear;
 }
@@ -231,14 +216,11 @@ async function main() {
   const topCountries = Object.entries(country_counts).slice(0, 5).map(([k, v]) => `${k}:${v}`).join(' ');
   console.log(`  Country contributions: ${Object.keys(country_counts).length} countries (top: ${topCountries})`);
 
-  // 6. Merge and write
-  const { byYear: existingYears } = loadExisting();
-  const fromApi  = filtered.map(workToEntry);
-  const merged   = mergeYears(existingYears, fromApi);
-
-  const years = Object.keys(merged)
+  // 6. Write (fresh data only — no merge with existing)
+  const byYear = groupByYear(filtered.map(workToEntry));
+  const years  = Object.keys(byYear)
     .map(Number).sort((a, b) => b - a)
-    .map(year => ({ year, items: merged[year] }));
+    .map(year => ({ year, items: byYear[year] }));
 
   // country_counts goes at the top of the file for clarity
   const output = yaml.dump({ country_counts, years }, { lineWidth: 140, quotingType: '"' });
